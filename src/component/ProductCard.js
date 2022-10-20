@@ -1,28 +1,33 @@
 // using pop up message madal from link : https://www.positronx.io/react-js-bootstrap-modal-popup-component-tutorial/
 
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import React from 'react';
 import { Modal, Button } from 'react-bootstrap'
+import { favContext } from '../config/favContext';
+import { useDispatch } from 'react-redux'
+import { addFav } from '../Redux/Actions/favAction';
 
-function ModalDialog() {
-
-}
-function ProductCard({ data }) {
+function ProductCard({ data, type }) {
   let nav = useNavigate();
 
   function go(data) {
     nav('/product', { state: data });
   }
-  function showProductDetails(details) {
-    return (
-      <></>
-    )
-  }
+
+  console.log(data);
+  console.log(type);
+  const dispatch = useDispatch();
+  const { fav, setFav } = useContext(favContext);
 
   const [isShow, invokeModal] = React.useState(false)
   const initModal = (data) => {
     invokeModal(!isShow)
+  }
+
+  function add(data) {
+    console.log("add data...");
+    dispatch(addFav(data));
+
   }
 
   return (
@@ -33,10 +38,10 @@ function ProductCard({ data }) {
           <h5 className="card-title">{data.title}</h5>
           <p className="card-text">{data.description}</p>
           <p className="card-text">{data.price}</p>
-          <button onClick={() => { showProductDetails(data) }} className="btn btn-primary">show product details</button>
+          {!type && <button onClick={() => { add(data)}} className="btn btn-primary">Add to favourite</button>}
 
-          <Button variant="success" onClick={()=> {initModal(data)}}>
-            Open Modal
+          <Button variant="success" onClick={() => { initModal(data) }}>
+            Show product details
           </Button>
           <Modal show={isShow}>
             <Modal.Header closeButton onClick={initModal}>

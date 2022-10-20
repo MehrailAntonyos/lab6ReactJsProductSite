@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 // import './nav.css'
 import { Link, NavLink } from 'react-router-dom'
+import { countContext } from '../config/countContext';
+import {useSelector}from 'react-redux'
+
 function Navbar() {
   var x = localStorage.getItem("token");
+
+  const{count,setCount}=useContext(countContext);
+  const counter=useSelector(state=>state.counterReducer.count);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -19,17 +26,21 @@ function Navbar() {
               <NavLink to="/product" className="nav-link active" aria-current="page" href="#">Products</NavLink>
             </li>
             <li className="nav-item px-3">
+              <NavLink to="/profile" className="nav-link active" aria-current="page" href="#">Profile</NavLink>
+            </li>
+            <li className="nav-item px-3">
+              <NavLink to="/count" className="nav-link active" aria-current="page" href="#">Count</NavLink>
+            </li>
+            <li className="nav-item px-3">
               {!x&& <NavLink to="/login" className="nav-link active" aria-current="page" href="#">Login</NavLink>}
+            </li>
+            <li className="nav-item px-3">
+              <span style={{color:"black",fontSize:30}}>{counter}</span>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-    //   <ul>
-    //   <li><NavLink to="/home">Home</NavLink></li>
-    //   <li><NavLink to="/product">Product</NavLink></li>
-    //  {!x&& <li><NavLink to="/login">Login</NavLink></li>}
-    // </ul>
   )
 }
 
